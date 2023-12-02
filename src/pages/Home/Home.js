@@ -13,16 +13,28 @@ const Home = () => {
   let dispatch = useDispatch();
   let [location, setLocation] = useState();
   let isSearch = false;
+  let [loading, setLoading] = useState(false);
 
+  //get user's location
   useEffect(() => {
     if (!isSearch) {
+      setLoading(true);
       navigator.geolocation &&
-        navigator.geolocation.getCurrentPosition((res) => {
-          setLocation({ lon: res.coords.longitude, lat: res.coords.latitude });
-          console.log('res: ', res);
-        });
+        navigator.geolocation.getCurrentPosition(
+          (res) => {
+            setLoading(false);
+            setLocation({
+              lon: res.coords.longitude,
+              lat: res.coords.latitude,
+            });
+          },
+          (err) => {
+            setLoading(false);
+          },
+        );
     }
   }, [isSearch]);
+
   //fetch weather
   useEffect(() => {
     location &&
@@ -59,6 +71,9 @@ const Home = () => {
           console.log(err);
         });
   }, [location]);
+  if (loading) {
+    return <h2>Loading....</h2>;
+  }
 
   return (
     <div className='container'>
