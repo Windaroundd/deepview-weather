@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Header from '../../component/Header/Header';
 import { weatherService } from '../../services/weatherService';
 import CurrentWeather from '../../component/CurrentWeather/CurrentWeather';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   setFiveDaysForecastInfo,
   setWeatherInfo,
@@ -14,6 +14,9 @@ const Home = () => {
   let [location, setLocation] = useState();
   let isSearch = false;
   let [loading, setLoading] = useState(false);
+  let { tempUnit } = useSelector((state) => {
+    return state.weatherSlice;
+  });
 
   //get user's location
   useEffect(() => {
@@ -42,7 +45,7 @@ const Home = () => {
         .getWeatherByLatLon({
           lat: location.lat,
           lon: location.lon,
-          units: 'metric',
+          units: tempUnit,
         })
         .then((res) => {
           console.log('res: ', res);
@@ -51,7 +54,7 @@ const Home = () => {
         .catch((err) => {
           console.log(err);
         });
-  }, [location]);
+  }, [location, tempUnit]);
 
   //fetch fiveDaysForecast
   useEffect(() => {
@@ -60,7 +63,7 @@ const Home = () => {
         .getFiveDaysForeCast({
           lat: location.lat,
           lon: location.lon,
-          units: 'metric',
+          units: tempUnit,
           cnt: 6,
         })
         .then((res) => {
@@ -70,7 +73,7 @@ const Home = () => {
         .catch((err) => {
           console.log(err);
         });
-  }, [location]);
+  }, [location, tempUnit]);
   if (loading) {
     return <h2>Loading....</h2>;
   }

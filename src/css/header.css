@@ -9,3 +9,8 @@ header .header-search__btn {
   border: 1px solid gray;
   text-transform: capitalize;
 }
+header .header {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}

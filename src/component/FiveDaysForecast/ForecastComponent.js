@@ -10,9 +10,10 @@ const ForecastComponent = ({ forecast, timezone }) => {
         <IconComponent icon={forecast.weather[0].icon} />
       </div>
       <div className='grid-item'>{forecast.weather[0].main}</div>
-      <div className='grid-item'>{forecast.temp.day}&deg;</div>
+      <div className='grid-item'>{Math.round(forecast.temp.day)}&deg;</div>
       <div className='grid-item'>
-        L/H: {forecast.temp.min}&deg;/{forecast.temp.max}&deg;
+        L/H: {Math.round(forecast.temp.min)}&deg;/
+        {Math.round(forecast.temp.max)}&deg;
       </div>
     </div>
   );

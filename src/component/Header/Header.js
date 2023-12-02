@@ -1,9 +1,11 @@
-import * as React from 'react';
+import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
+
 import Modal from '@mui/material/Modal';
 import '../../css/header.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { setTempUnit } from '../../redux-toolkit/weatherSlice';
 
 const style = {
   position: 'absolute',
@@ -18,30 +20,63 @@ const style = {
 };
 
 export default function Header() {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  let dispatch = useDispatch();
+  let { tempUnit } = useSelector((state) => {
+    return state.weatherSlice;
+  });
+
   return (
-    <div className=''>
-      <Button className='header-search__btn' onClick={handleOpen}>
-        Search city...
-      </Button>
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby='modal-modal-title'
-        aria-describedby='modal-modal-description'
-      >
-        <Box sx={style}>
-          <Typography id='modal-modal-title' variant='h6' component='h2'>
-            Text in a modal
-          </Typography>
-          <Typography id='modal-modal-description' sx={{ mt: 2 }}>
-            Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-          </Typography>
-        </Box>
-      </Modal>
-    </div>
+    <>
+      {' '}
+      <div className='header'>
+        <div>
+          <Button className='header-search__btn' onClick={handleOpen}>
+            Search city...
+          </Button>
+        </div>
+        <div>
+          <Button
+            className='header-search__btn'
+            onClick={() => {
+              dispatch(setTempUnit('metric'));
+            }}
+            style={{
+              backgroundColor: tempUnit === 'metric' ? 'black' : '',
+              color: tempUnit === 'metric' ? 'white' : '',
+            }}
+          >
+            &deg;C
+          </Button>
+          <Button
+            className='header-search__btn'
+            onClick={() => {
+              dispatch(setTempUnit('imperial'));
+            }}
+            style={{
+              backgroundColor: tempUnit === 'imperial' ? 'black' : '',
+              color: tempUnit === 'imperial' ? 'white' : '',
+            }}
+          >
+            &deg;F
+          </Button>
+        </div>
+      </div>{' '}
+      <div className=''>
+        <Modal
+          open={open}
+          onClose={handleClose}
+          aria-labelledby='modal-modal-title'
+          aria-describedby='modal-modal-description'
+        >
+          <Box sx={style}>
+            <h1>Hello</h1>
+          </Box>
+        </Modal>
+      </div>
+    </>
   );
 }
