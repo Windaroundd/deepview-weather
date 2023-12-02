@@ -1,19 +1,23 @@
-import axios from "axios";
-
+import axios from 'axios';
+const setAuthorization = (token) => {
+  axios.defaults.headers.common['appid'] = token;
+};
 export const axiosInstance = axios.create({
-  baseURL: "",
+  baseURL: `${process.env.REACT_APP_BASE_URL}`,
   headers: {},
 });
+setAuthorization('');
 
 axiosInstance.interceptors.request.use(
   function (config) {
     // Do something before request is sent
+
     return config;
   },
   function (error) {
     // Do something with request error
     return Promise.reject(error);
-  }
+  },
 );
 
 // Add a response interceptor
@@ -27,5 +31,5 @@ axiosInstance.interceptors.response.use(
     // Any status codes that falls outside the range of 2xx cause this function to trigger
     // Do something with response error
     return Promise.reject(error);
-  }
+  },
 );

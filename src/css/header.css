@@ -1,0 +1,34 @@
+header {
+  display: flex;
+  justify-content: flex-start;
+  padding: 10px 0;
+}
+
+header .header-search__btn {
+  color: black;
+  border: 1px solid gray;
+  text-transform: capitalize;
+}
+header .header {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+.header-search__input {
+  width: 100%;
+  padding: 0.5rem 1rem;
+  border: unset;
+  font-size: 20px;
+}
+.header-search__modal p {
+  font-size: 15px;
+  color: gray;
+}
+.header-search__list {
+}
+.header-search__item {
+  padding: 10px;
+}
+.header-search__item:hover {
+  background-color: gray;
+}

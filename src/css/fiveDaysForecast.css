@@ -1,0 +1,14 @@
+.fiveday-forecast {
+  margin-top: 10px;
+  border: 1px solid gray;
+}
+
+.fiveday-forecast__info {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+.fiveday-forecast__info .grid-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
