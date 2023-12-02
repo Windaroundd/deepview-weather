@@ -14,3 +14,21 @@ header .header {
   justify-content: space-between;
   width: 100%;
 }
+.header-search__input {
+  width: 100%;
+  padding: 0.5rem 1rem;
+  border: unset;
+  font-size: 20px;
+}
+.header-search__modal p {
+  font-size: 15px;
+  color: gray;
+}
+.header-search__list {
+}
+.header-search__item {
+  padding: 10px;
+}
+.header-search__item:hover {
+  background-color: gray;
+}

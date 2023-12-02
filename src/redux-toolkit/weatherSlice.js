@@ -5,6 +5,7 @@ const initialState = {
   weather: undefined,
   fiveDaysForecast: undefined,
   tempUnit: 'metric',
+  location: undefined,
 };
 
 const weatherSlice = createSlice({
@@ -20,10 +21,17 @@ const weatherSlice = createSlice({
     setTempUnit: (state, action) => {
       state.tempUnit = action.payload;
     },
+    setLocation: (state, action) => {
+      state.location = action.payload;
+    },
   },
 });
 
-export const { setWeatherInfo, setFiveDaysForecastInfo, setTempUnit } =
-  weatherSlice.actions;
+export const {
+  setWeatherInfo,
+  setFiveDaysForecastInfo,
+  setTempUnit,
+  setLocation,
+} = weatherSlice.actions;
 
 export default weatherSlice.reducer;

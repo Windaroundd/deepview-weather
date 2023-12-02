@@ -5,20 +5,28 @@ import CurrentWeather from '../../component/CurrentWeather/CurrentWeather';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   setFiveDaysForecastInfo,
+  setLocation,
   setWeatherInfo,
 } from '../../redux-toolkit/weatherSlice';
 import FiveDaysForecast from '../../component/FiveDaysForecast/FiveDaysForecast';
+import { useLocation, useSearchParams } from 'react-router-dom';
 
 const Home = () => {
   let dispatch = useDispatch();
-  let [location, setLocation] = useState();
-  let isSearch = false;
+
+  let [searchParams, setSearchParams] = useSearchParams();
+  const lat = searchParams.get('lat');
+  const lon = searchParams.get('lon');
+  const { pathname } = useLocation();
+
+  let isSearch = pathname.includes('/search');
+
   let [loading, setLoading] = useState(false);
-  let { tempUnit } = useSelector((state) => {
+  let { tempUnit, location } = useSelector((state) => {
     return state.weatherSlice;
   });
 
-  //get user's location
+  //get location lat lon
   useEffect(() => {
     if (!isSearch) {
       setLoading(true);
@@ -26,21 +34,25 @@ const Home = () => {
         navigator.geolocation.getCurrentPosition(
           (res) => {
             setLoading(false);
-            setLocation({
-              lon: res.coords.longitude,
-              lat: res.coords.latitude,
-            });
+            dispatch(
+              setLocation({
+                lon: res.coords.longitude,
+                lat: res.coords.latitude,
+              }),
+            );
           },
           (err) => {
             setLoading(false);
           },
         );
+    } else {
+      dispatch(setLocation({ lat: lat, lon: lon }));
     }
-  }, [isSearch]);
+  }, [isSearch, lat, lon]);
 
   //fetch weather
   useEffect(() => {
-    location &&
+    if (location) {
       weatherService
         .getWeatherByLatLon({
           lat: location.lat,
@@ -54,11 +66,12 @@ const Home = () => {
         .catch((err) => {
           console.log(err);
         });
-  }, [location, tempUnit]);
+    }
+  }, [location, tempUnit, dispatch]);
 
   //fetch fiveDaysForecast
   useEffect(() => {
-    location &&
+    if (location) {
       weatherService
         .getFiveDaysForeCast({
           lat: location.lat,
@@ -73,7 +86,8 @@ const Home = () => {
         .catch((err) => {
           console.log(err);
         });
-  }, [location, tempUnit]);
+    }
+  }, [location, tempUnit, dispatch]);
   if (loading) {
     return <h2>Loading....</h2>;
   }

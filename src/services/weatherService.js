@@ -17,4 +17,10 @@ export const weatherService = {
       { params: query },
     );
   },
+  getCoordinatesByLocation: (query) => {
+    return axiosInstance.get(
+      `/geo/1.0/direct?appid=${process.env.REACT_APP_API_KEY}`,
+      { params: query },
+    );
+  },
 };

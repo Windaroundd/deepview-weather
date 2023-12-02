@@ -6,6 +6,8 @@ import Modal from '@mui/material/Modal';
 import '../../css/header.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { setTempUnit } from '../../redux-toolkit/weatherSlice';
+import { weatherService } from '../../services/weatherService';
+import { useNavigate } from 'react-router-dom';
 
 const style = {
   position: 'absolute',
@@ -14,21 +16,34 @@ const style = {
   transform: 'translate(-50%, -50%)',
   width: 400,
   bgcolor: 'background.paper',
-  border: '2px solid #000',
   boxShadow: 24,
-  p: 4,
+  p: 1,
 };
 
 export default function Header() {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  let [locationName, setLocationName] = useState();
+  let [locationSuggestList, setLocationSuggestList] = useState();
+  let naigate = useNavigate();
 
   let dispatch = useDispatch();
   let { tempUnit } = useSelector((state) => {
     return state.weatherSlice;
   });
-
+  useEffect(() => {
+    locationName &&
+      weatherService
+        .getCoordinatesByLocation({ q: locationName, limit: 5 })
+        .then((res) => {
+          console.log(res);
+          setLocationSuggestList(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+  }, [locationName]);
   return (
     <>
       {' '}
@@ -72,8 +87,33 @@ export default function Header() {
           aria-labelledby='modal-modal-title'
           aria-describedby='modal-modal-description'
         >
-          <Box sx={style}>
-            <h1>Hello</h1>
+          <Box className='header-search__modal' sx={style}>
+            <input
+              className='header-search__input'
+              type='text'
+              value={locationName}
+              onChange={(e) => {
+                setLocationName(e.target.value);
+              }}
+            />
+            <hr />
+            <p>Suggestions</p>
+            <div className='header-search__list'>
+              {locationSuggestList?.map((item) => {
+                return (
+                  <div
+                    className='header-search__item'
+                    role='button'
+                    onClick={() => {
+                      naigate(`/search?lat=${item.lat}&lon=${item.lon}`);
+                      handleClose();
+                    }}
+                  >
+                    {item.name}, {item.country}
+                  </div>
+                );
+              })}
+            </div>
           </Box>
         </Modal>
       </div>
