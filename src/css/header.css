@@ -1,0 +1,11 @@
+header {
+  display: flex;
+  justify-content: flex-start;
+  padding: 10px 0;
+}
+
+header .header-search__btn {
+  color: black;
+  border: 1px solid gray;
+  text-transform: capitalize;
+}
