@@ -1,8 +1,8 @@
-# Add .env file with these key to RestAPI
+## Add .env file with these key to RestAPI
 
-### `REACT_APP_BASE_URL = "https://api.openweathermap.org"
+REACT_APP_BASE_URL = "https://api.openweathermap.org"
 
-REACT_APP_API_KEY = "1696e3cab30f6f7956935ed6b8b1f983"`
+REACT_APP_API_KEY = "1696e3cab30f6f7956935ed6b8b1f983"
 
 ## Install packages
 
