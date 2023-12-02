@@ -33,3 +33,6 @@ main .current-weather {
   display: inline-block;
   padding-right: 10px;
 }
+.current-weather__weather img {
+  width: 80px;
+}

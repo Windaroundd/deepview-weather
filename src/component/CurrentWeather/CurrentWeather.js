@@ -1,42 +1,13 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../../css/currentWeather.css';
 import { useSelector } from 'react-redux';
+import { convertDate } from '../../lib/dateUtils';
+import IconComponent from '../ui/IconComponent';
 
 const CurrentWeather = () => {
   const { weather } = useSelector((state) => {
     return state.weatherSlice;
   });
-  let convertDate = (timezone, dt) => {
-    // Extract timestamp and timezone offset from the data object
-    const timestamp = dt;
-    const timeZoneOffsetInSeconds = timezone;
-
-    // Convert UTC timestamp to milliseconds
-    const utcMilliseconds = timestamp * 1000;
-
-    // Create a Date object with the UTC time
-    const utcDate = new Date(utcMilliseconds);
-
-    // Apply the time zone offset
-    const userFriendlyDate = new Date(
-      utcDate.getTime() + timeZoneOffsetInSeconds * 1000,
-    );
-
-    // Format the date as a string in a user-friendly way (date only, no time)
-    const options = {
-      timeZone: 'UTC',
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    };
-    const userFriendlyDateString = userFriendlyDate.toLocaleString(
-      'en-US',
-      options,
-    );
-
-    return userFriendlyDateString;
-  };
 
   return (
     <>
@@ -50,10 +21,9 @@ const CurrentWeather = () => {
           </div>
           <div className='current-weather__weather'>
             <div>
-              <img
-                style={{ width: '80px' }}
-                src={`https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`}
-                alt=''
+              <IconComponent
+                icon={weather.weather[0].icon}
+                alt={weather.weather[0].description}
               />
               <h3>{weather.weather[0].main}</h3>
             </div>
