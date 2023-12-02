@@ -1,7 +1,5 @@
-import HomePage from "../app/page";
+import Home from '../pages/Home/Home';
 
-const authProtectedRoutes = [];
+const publicRoutes = [{ path: '/', component: Home }];
 
-const publicRoutes = [{ path: "/", component: HomePage }];
-
-export { authProtectedRoutes, publicRoutes };
+export { publicRoutes };

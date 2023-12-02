@@ -1,4 +1,4 @@
-export const USER_DATA_LOCAL = "USER_DATA_LOCAL";
+export const USER_DATA_LOCAL = 'USER_DATA_LOCAL';
 
 export const userDataLocal = {
   set: (userData) => {
