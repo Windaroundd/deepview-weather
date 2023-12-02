@@ -36,7 +36,7 @@ const Home = () => {
         lat: 9.94719,
         lon: 106.34225,
         units: 'metric',
-        cnt: 5,
+        cnt: 6,
       })
       .then((res) => {
         console.log(res);

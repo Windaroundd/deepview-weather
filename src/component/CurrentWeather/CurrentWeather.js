@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import '../../css/currentWeather.css';
 import { useSelector } from 'react-redux';
 import { convertDate } from '../../lib/dateUtils';
-import IconComponent from '../ui/IconComponent';
+import IconComponent from '../UI/IconComponent';
 
 const CurrentWeather = () => {
   const { weather } = useSelector((state) => {
@@ -16,7 +16,7 @@ const CurrentWeather = () => {
           <h1 className='current-weather__location'>{weather.name}</h1>
           <div className='current-weather__date-time'>
             <p className='current-weather__date'>
-              {convertDate(weather.timezone, weather.dt)}
+              {convertDate(weather.timezone, weather.dt, 'long')}
             </p>
           </div>
           <div className='current-weather__weather'>
@@ -30,8 +30,8 @@ const CurrentWeather = () => {
             <div className='current-weather__temp'>
               {Math.round(weather.main.temp)}&deg;
               <div className='current-weather__temp-minmax'>
-                <span> Min: {Math.round(weather.main.temp_min)}&deg;</span>
-                <span> Max: {Math.round(weather.main.temp_max)}&deg;</span>
+                <span> Low: {Math.round(weather.main.temp_min)}&deg;</span>
+                <span> High: {Math.round(weather.main.temp_max)}&deg;</span>
               </div>
             </div>
           </div>

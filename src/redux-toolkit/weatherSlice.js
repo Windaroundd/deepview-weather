@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   weather: undefined,
+  fiveDaysForecast: undefined,
 };
 
 const weatherSlice = createSlice({
@@ -11,9 +12,12 @@ const weatherSlice = createSlice({
     setWeatherInfo: (state, action) => {
       state.weather = action.payload;
     },
+    setFiveDaysForecastInfo: (state, action) => {
+      state.fiveDaysForecast = action.payload;
+    },
   },
 });
 
-export const { setWeatherInfo } = weatherSlice.actions;
+export const { setWeatherInfo, setFiveDaysForecastInfo } = weatherSlice.actions;
 
 export default weatherSlice.reducer;
