@@ -11,7 +11,12 @@ const Home = () => {
   //fetch weather
   useEffect(() => {
     weatherService
-      .getWeatherByLatLon()
+      .getWeatherByLatLon({
+        lat: 9.94719,
+        lon: 106.34225,
+        appid: '4d8fb5b93d4af21d66a2948710284366',
+        units: 'metric',
+      })
       .then((res) => {
         console.log(res);
         dispatch(setWeatherInfo(res.data));
