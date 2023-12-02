@@ -3,7 +3,7 @@ const setAuthorization = (token) => {
   axios.defaults.headers.common['appid'] = token;
 };
 export const axiosInstance = axios.create({
-  baseURL: 'https://api.openweathermap.org',
+  baseURL: `${process.env.REACT_APP_BASE_URL}`,
   headers: {},
 });
 setAuthorization('');
