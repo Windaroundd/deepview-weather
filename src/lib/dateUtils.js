@@ -1,4 +1,4 @@
-export const convertDate = (timezone, dt) => {
+export const convertDate = (timezone, dt, dateFormat = 'short') => {
   const timeZoneOffsetInSeconds = timezone;
   const timestamp = dt;
 
@@ -13,14 +13,23 @@ export const convertDate = (timezone, dt) => {
     utcDate.getTime() + timeZoneOffsetInSeconds * 1000,
   );
 
-  // Format the date as a string in a user-friendly way (date only, no time)
-  const options = {
-    timeZone: 'UTC',
-    weekday: 'long',
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  };
+  // Format the date as a string in a user-friendly way
+  let options;
+  if (dateFormat === 'short') {
+    options = {
+      timeZone: 'UTC',
+      weekday: 'short',
+    };
+  } else if (dateFormat === 'long') {
+    options = {
+      timeZone: 'UTC',
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    };
+  }
+
   const userFriendlyDateString = userFriendlyDate.toLocaleString(
     'en-US',
     options,
