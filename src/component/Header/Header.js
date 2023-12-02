@@ -37,7 +37,6 @@ export default function Header() {
       weatherService
         .getCoordinatesByLocation({ q: locationName, limit: 5 })
         .then((res) => {
-          console.log(res);
           setLocationSuggestList(res.data);
         })
         .catch((err) => {

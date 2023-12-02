@@ -60,7 +60,6 @@ const Home = () => {
           units: tempUnit,
         })
         .then((res) => {
-          console.log('res: ', res);
           dispatch(setWeatherInfo(res.data));
         })
         .catch((err) => {
@@ -80,7 +79,6 @@ const Home = () => {
           cnt: 6,
         })
         .then((res) => {
-          console.log(res);
           dispatch(setFiveDaysForecastInfo(res.data));
         })
         .catch((err) => {
