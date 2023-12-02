@@ -11,51 +11,68 @@ import FiveDaysForecast from '../../component/FiveDaysForecast/FiveDaysForecast'
 
 const Home = () => {
   let dispatch = useDispatch();
+  let [location, setLocation] = useState();
+  let isSearch = false;
 
+  useEffect(() => {
+    if (!isSearch) {
+      navigator.geolocation &&
+        navigator.geolocation.getCurrentPosition((res) => {
+          setLocation({ lon: res.coords.longitude, lat: res.coords.latitude });
+          console.log('res: ', res);
+        });
+    }
+  }, [isSearch]);
   //fetch weather
   useEffect(() => {
-    weatherService
-      .getWeatherByLatLon({
-        lat: 9.94719,
-        lon: 106.34225,
-        units: 'metric',
-      })
-      .then((res) => {
-        console.log('res: ', res);
-        dispatch(setWeatherInfo(res.data));
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
+    location &&
+      weatherService
+        .getWeatherByLatLon({
+          lat: location.lat,
+          lon: location.lon,
+          units: 'metric',
+        })
+        .then((res) => {
+          console.log('res: ', res);
+          dispatch(setWeatherInfo(res.data));
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+  }, [location]);
 
   //fetch fiveDaysForecast
   useEffect(() => {
-    weatherService
-      .getFiveDaysForeCast({
-        lat: 9.94719,
-        lon: 106.34225,
-        units: 'metric',
-        cnt: 6,
-      })
-      .then((res) => {
-        console.log(res);
-        dispatch(setFiveDaysForecastInfo(res.data));
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
+    location &&
+      weatherService
+        .getFiveDaysForeCast({
+          lat: location.lat,
+          lon: location.lon,
+          units: 'metric',
+          cnt: 6,
+        })
+        .then((res) => {
+          console.log(res);
+          dispatch(setFiveDaysForecastInfo(res.data));
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+  }, [location]);
 
   return (
     <div className='container'>
       <header>
         <Header />
       </header>
-      <main>
-        <CurrentWeather />
-        <FiveDaysForecast />
-      </main>
+      {location ? (
+        <main>
+          <CurrentWeather />
+          <FiveDaysForecast />
+        </main>
+      ) : (
+        <h2>ENABLE YOUR GPS OR SEARCHING CITY</h2>
+      )}
     </div>
   );
 };
