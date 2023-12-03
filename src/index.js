@@ -7,11 +7,13 @@ import { configureStore } from '@reduxjs/toolkit';
 import userSlice from './redux-toolkit/userSlice';
 import { Provider } from 'react-redux';
 import weatherSlice from './redux-toolkit/weatherSlice';
+import loadingSlice from './redux-toolkit/loadingSlice';
 
-const store_toolkit = configureStore({
+export const store_toolkit = configureStore({
   reducer: {
     userSlice: userSlice,
     weatherSlice: weatherSlice,
+    loadingSlice: loadingSlice,
   },
 });
 

@@ -10,6 +10,12 @@ import {
 } from '../../redux-toolkit/weatherSlice';
 import FiveDaysForecast from '../../component/FiveDaysForecast/FiveDaysForecast';
 import { useLocation, useSearchParams } from 'react-router-dom';
+import {
+  getLocationError,
+  getLocationSuccess,
+  getUserLocation,
+} from '../../lib/LocationUtils';
+import { setLoading } from '../../redux-toolkit/loadingSlice';
 
 const Home = () => {
   let dispatch = useDispatch();
@@ -21,30 +27,29 @@ const Home = () => {
 
   let isSearch = pathname.includes('/search');
 
-  let [loading, setLoading] = useState(false);
   let { tempUnit, location } = useSelector((state) => {
     return state.weatherSlice;
   });
 
+  const onGetLocationSuccess = (res) => {
+    dispatch(
+      setLocation({
+        lon: res.coords.longitude,
+        lat: res.coords.latitude,
+      }),
+    );
+    dispatch(setLoading(false));
+  };
+  const onGetLocationErr = (err) => {
+    alert(err);
+    dispatch(setLoading(false));
+  };
+
   //get location lat lon
   useEffect(() => {
     if (!isSearch) {
-      setLoading(true);
-      navigator.geolocation &&
-        navigator.geolocation.getCurrentPosition(
-          (res) => {
-            setLoading(false);
-            dispatch(
-              setLocation({
-                lon: res.coords.longitude,
-                lat: res.coords.latitude,
-              }),
-            );
-          },
-          (err) => {
-            setLoading(false);
-          },
-        );
+      dispatch(setLoading(true));
+      getUserLocation(onGetLocationSuccess, onGetLocationErr);
     } else {
       dispatch(setLocation({ lat: lat, lon: lon }));
     }
@@ -86,9 +91,6 @@ const Home = () => {
         });
     }
   }, [location, tempUnit, dispatch]);
-  if (loading) {
-    return <h2>Loading....</h2>;
-  }
 
   return (
     <div className='container'>
