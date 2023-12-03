@@ -1,4 +1,4 @@
-## Add .env file with these key to RestAPI
+## Add .env file to project with these key to RestAPI
 
 REACT_APP_BASE_URL = "https://api.openweathermap.org"
 
