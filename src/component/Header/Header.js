@@ -32,8 +32,8 @@ export default function Header() {
   let { tempUnit } = useSelector((state) => {
     return state.weatherSlice;
   });
-  useEffect(() => {
-    locationName &&
+  const getWeatherByLocation = (locationName) => {
+    if (locationName) {
       weatherService
         .getCoordinatesByLocation({ q: locationName, limit: 5 })
         .then((res) => {
@@ -42,7 +42,13 @@ export default function Header() {
         .catch((err) => {
           console.log(err);
         });
-  }, [locationName]);
+    }
+  };
+
+  // useEffect(() => {
+  //   locationName &&
+  //
+  // }, [locationName]);
   return (
     <>
       {' '}
@@ -87,14 +93,31 @@ export default function Header() {
           aria-describedby='modal-modal-description'
         >
           <Box className='header-search__modal' sx={style}>
-            <input
-              className='header-search__input'
-              type='text'
-              value={locationName}
-              onChange={(e) => {
-                setLocationName(e.target.value);
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                getWeatherByLocation(locationName);
               }}
-            />
+            >
+              <label
+                style={{
+                  display: 'block',
+                  marginBottom: '10px',
+                }}
+                htmlFor=''
+              >
+                Enter to submit
+              </label>
+              <input
+                name='search__input'
+                className='header-search__input'
+                type='text'
+                value={locationName}
+                onChange={(e) => {
+                  setLocationName(e.target.value);
+                }}
+              />
+            </form>
             <hr />
             <p>Suggestions</p>
             <div className='header-search__list'>
