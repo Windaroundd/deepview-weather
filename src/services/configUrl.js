@@ -1,14 +1,11 @@
 import axios from 'axios';
 import { store_toolkit } from '..';
 import { setLoading } from '../redux-toolkit/loadingSlice';
-const setAuthorization = (token) => {
-  axios.defaults.headers.common['appid'] = token;
-};
+
 export const axiosInstance = axios.create({
   baseURL: `${process.env.REACT_APP_BASE_URL}`,
   headers: {},
 });
-setAuthorization('');
 
 axiosInstance.interceptors.request.use(
   function (config) {
