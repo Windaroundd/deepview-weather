@@ -2,7 +2,7 @@
 
 REACT_APP_BASE_URL = "https://api.openweathermap.org"
 
-REACT_APP_API_KEY = "1696e3cab30f6f7956935ed6b8b1f983"
+REACT_APP_API_KEY = "3e4be8c4dd9fa225551735e555eb7028"
 
 ## Install packages
 
