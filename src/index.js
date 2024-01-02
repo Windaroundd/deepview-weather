@@ -3,25 +3,19 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { configureStore } from '@reduxjs/toolkit';
-import userSlice from './redux-toolkit/userSlice';
-import { Provider } from 'react-redux';
-import weatherSlice from './redux-toolkit/weatherSlice';
-import loadingSlice from './redux-toolkit/loadingSlice';
 
-export const store_toolkit = configureStore({
-  reducer: {
-    userSlice: userSlice,
-    weatherSlice: weatherSlice,
-    loadingSlice: loadingSlice,
-  },
-});
+import { RecoilRoot } from 'recoil';
+import RecoilNexus from 'recoil-nexus';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <Provider store={store_toolkit}>
+  // <Provider store={store_toolkit}>
+
+  <RecoilRoot>
+    <RecoilNexus />
     <App />
-  </Provider>,
+  </RecoilRoot>,
+  // </Provider>,
 );
 
 // If you want to start measuring performance in your app, pass a function

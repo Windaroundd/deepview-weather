@@ -1,7 +1,7 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
-
 import BarLoader from 'react-spinners/BarLoader';
+import { useRecoilValue } from 'recoil';
+import { isLoadingState } from '../../recoil/atom';
 
 const style = {
   height: '100vh',
@@ -15,9 +15,7 @@ const style = {
 };
 
 const LoadingSpinner = () => {
-  let { isLoading } = useSelector((state) => {
-    return state.loadingSlice;
-  });
+  let isLoading = useRecoilValue(isLoadingState);
 
   return (
     <>

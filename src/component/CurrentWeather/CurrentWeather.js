@@ -1,13 +1,12 @@
 import React from 'react';
 import '../../css/currentWeather.css';
-import { useSelector } from 'react-redux';
 import { convertDate } from '../../lib/dateUtils';
 import IconComponent from '../UI/IconComponent';
+import { useRecoilValue } from 'recoil';
+import { weatherState } from '../../recoil/atom';
 
 const CurrentWeather = () => {
-  const { weather } = useSelector((state) => {
-    return state.weatherSlice;
-  });
+  const weather = useRecoilValue(weatherState);
 
   return (
     <>

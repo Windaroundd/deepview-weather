@@ -1,57 +1,54 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import Header from '../../component/Header/Header';
 import { weatherService } from '../../services/weatherService';
 import CurrentWeather from '../../component/CurrentWeather/CurrentWeather';
-import { useDispatch, useSelector } from 'react-redux';
-import {
-  setFiveDaysForecastInfo,
-  setLocation,
-  setWeatherInfo,
-} from '../../redux-toolkit/weatherSlice';
+
 import FiveDaysForecast from '../../component/FiveDaysForecast/FiveDaysForecast';
 import { useLocation, useSearchParams } from 'react-router-dom';
+import { getUserLocation } from '../../lib/LocationUtils';
+
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import {
-  getLocationError,
-  getLocationSuccess,
-  getUserLocation,
-} from '../../lib/LocationUtils';
-import { setLoading } from '../../redux-toolkit/loadingSlice';
+  fiveDaysForecastState,
+  isLoadingState,
+  locationState,
+  tempUnitState,
+  weatherState,
+} from '../../recoil/atom';
 
 const Home = () => {
-  let dispatch = useDispatch();
+  let setLoading = useSetRecoilState(isLoadingState);
+  let [location, setLocation] = useRecoilState(locationState);
+  let setWeatherInfo = useSetRecoilState(weatherState);
+  let tempUnit = useRecoilValue(tempUnitState);
+  let setFiveDaysForecastInfo = useSetRecoilState(fiveDaysForecastState);
 
-  let [searchParams, setSearchParams] = useSearchParams();
+  let [searchParams] = useSearchParams();
   const lat = searchParams.get('lat');
   const lon = searchParams.get('lon');
   const { pathname } = useLocation();
 
   let isSearch = pathname.includes('/search');
 
-  let { tempUnit, location } = useSelector((state) => {
-    return state.weatherSlice;
-  });
-
   const onGetLocationSuccess = (res) => {
-    dispatch(
-      setLocation({
-        lon: res.coords.longitude,
-        lat: res.coords.latitude,
-      }),
-    );
-    dispatch(setLoading(false));
+    setLocation({
+      lon: res.coords.longitude,
+      lat: res.coords.latitude,
+    });
+    setLoading(false);
   };
   const onGetLocationErr = (err) => {
     alert(err);
-    dispatch(setLoading(false));
+    setLoading(false);
   };
 
   //get location lat lon
   useEffect(() => {
     if (!isSearch) {
-      dispatch(setLoading(true));
+      setLoading(true);
       getUserLocation(onGetLocationSuccess, onGetLocationErr);
     } else {
-      dispatch(setLocation({ lat: lat, lon: lon }));
+      setLocation({ lat: lat, lon: lon });
     }
   }, [isSearch, lat, lon]);
 
@@ -65,13 +62,13 @@ const Home = () => {
           units: tempUnit,
         })
         .then((res) => {
-          dispatch(setWeatherInfo(res.data));
+          setWeatherInfo(res.data);
         })
         .catch((err) => {
           console.log(err);
         });
     }
-  }, [location, tempUnit, dispatch]);
+  }, [location, tempUnit]);
 
   //fetch fiveDaysForecast
   useEffect(() => {
@@ -84,13 +81,13 @@ const Home = () => {
           cnt: 6,
         })
         .then((res) => {
-          dispatch(setFiveDaysForecastInfo(res.data));
+          setFiveDaysForecastInfo(res.data);
         })
         .catch((err) => {
           console.log(err);
         });
     }
-  }, [location, tempUnit, dispatch]);
+  }, [location, tempUnit]);
 
   return (
     <div className='container'>

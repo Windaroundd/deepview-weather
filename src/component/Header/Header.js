@@ -4,10 +4,10 @@ import Button from '@mui/material/Button';
 
 import Modal from '@mui/material/Modal';
 import '../../css/header.css';
-import { useDispatch, useSelector } from 'react-redux';
-import { setTempUnit } from '../../redux-toolkit/weatherSlice';
 import { weatherService } from '../../services/weatherService';
 import { useNavigate } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
+import { tempUnitState } from '../../recoil/atom';
 
 const style = {
   position: 'absolute',
@@ -24,14 +24,11 @@ export default function Header() {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  let [locationName, setLocationName] = useState();
+  let [locationName, setLocationName] = useState('');
   let [locationSuggestList, setLocationSuggestList] = useState();
   let naigate = useNavigate();
+  let [tempUnit, setTempUnit] = useRecoilState(tempUnitState);
 
-  let dispatch = useDispatch();
-  let { tempUnit } = useSelector((state) => {
-    return state.weatherSlice;
-  });
   const getWeatherByLocation = (locationName) => {
     if (locationName) {
       weatherService
@@ -45,10 +42,6 @@ export default function Header() {
     }
   };
 
-  // useEffect(() => {
-  //   locationName &&
-  //
-  // }, [locationName]);
   return (
     <>
       {' '}
@@ -62,7 +55,7 @@ export default function Header() {
           <Button
             className='header-search__btn'
             onClick={() => {
-              dispatch(setTempUnit('metric'));
+              setTempUnit('metric');
             }}
             style={{
               backgroundColor: tempUnit === 'metric' ? 'black' : '',
@@ -74,7 +67,7 @@ export default function Header() {
           <Button
             className='header-search__btn'
             onClick={() => {
-              dispatch(setTempUnit('imperial'));
+              setTempUnit('imperial');
             }}
             style={{
               backgroundColor: tempUnit === 'imperial' ? 'black' : '',
@@ -86,12 +79,7 @@ export default function Header() {
         </div>
       </div>{' '}
       <div className=''>
-        <Modal
-          open={open}
-          onClose={handleClose}
-          aria-labelledby='modal-modal-title'
-          aria-describedby='modal-modal-description'
-        >
+        <Modal open={open} onClose={handleClose}>
           <Box className='header-search__modal' sx={style}>
             <form
               onSubmit={(e) => {
@@ -104,7 +92,6 @@ export default function Header() {
                   display: 'block',
                   marginBottom: '10px',
                 }}
-                htmlFor=''
               >
                 Enter to submit
               </label>
@@ -124,6 +111,7 @@ export default function Header() {
               {locationSuggestList?.map((item) => {
                 return (
                   <div
+                    key={item.lat}
                     className='header-search__item'
                     role='button'
                     onClick={() => {
